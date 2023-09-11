@@ -24,6 +24,14 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         "https://random.dog/6129aa24-e224-4f7b-8058-e33cca8bfab0.JPG"
     ]
     
+    let backImage: UIImageView = {
+        let image = UIImageView(frame: UIScreen.main.bounds)
+        image.image = UIImage(named: "dogsnLove")
+        image.contentMode = .scaleAspectFit
+       
+        return image
+    }()
+    
     let activityIndicator: UIActivityIndicatorView = {
         let indicator = UIActivityIndicatorView(style: .large)
         indicator.translatesAutoresizingMaskIntoConstraints = false
@@ -41,9 +49,12 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(collection)
+       // view.addSubview(backImage)
+//        self.view.insertSubview(backImage, at: 0)
         view.addSubview(activityIndicator)
-        loadImages(from: imageURLs)
+      loadImages(from: imageURLs)
         setup()
+       
     }
     
     func setup() {
@@ -52,6 +63,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         collection.dataSource = self
         collection.delegate = self
         collection.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "cell")
+//        collection.backgroundView = backImage
 
         collection.snp.makeConstraints {
             $0.edges.equalToSuperview()
@@ -59,6 +71,9 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         activityIndicator.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
+//        backImage.snp.makeConstraints {
+//            $0.edges.equalTo(collection)
+//        }
     }
     
     func loadImages(from links: [String]) {
@@ -91,6 +106,12 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
+         let backImage = UIImageView(frame: UIScreen.main.bounds)
+        backImage.image = UIImage(named: "dogsnLove")
+        backImage.contentMode = .scaleToFill
+        collection.backgroundView = backImage
+           
+        
         if let imageView = cell.contentView.viewWithTag(1) as? UIImageView {
             imageView.image = images[indexPath.item]
         } else {
